@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function check_av_space {
+
+	av_space=$(df -h /home/grooze/ | awk 'FNR == 2 {print $4}' | grep -o '[0-9][.][0-9]')
+	
+	if [[ ${#av_space} -gt 1 ]]; then
+		echo "Enough free space"
+	else
+		echo "No more free space"
+	fi
+echo "$av_space"
+
+}

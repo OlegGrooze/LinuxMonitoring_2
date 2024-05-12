@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function create_directories {
+
+directory_name=""
+repeator=1
+
+for (( i=0; i < ${#2}; ++index_n_f ))
+do
+	for (( index_f_n=0; index_f_n<=${#directory_name}; ++index_f_n ))
+	do
+		last_char="${directory_name: -1}"
+		current_char="${directory_name: index_f_n:1}"
+		if [[ $last_char -ne $current_char ]]
+		then
+			for ((index_r=0; index_r<repeator; ++index_r))
+			do
+			directory_name+=$current_char;
+			done
+		fi
+	done
+	
+	directory_name+="_"
+	directory_name+=$(date +"%d%m%y")
+	mkdir "$1"/"$directory_name"
+	echo "Directory created: $(pwd "$1")/$directory_name/ - $(date +"%d-%m-%Y") - $(du -h "$1"/"$directory_name"/ | awk '{print $1}')" >> log_file.log
+	directory_name=""
+	((++repeator))
+done
+
+}

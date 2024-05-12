@@ -1,0 +1,60 @@
+#!/bin/bash
+
+function check_arguments {
+
+# Проверка количества аргументов
+if [ $# -ne 6 ]
+then
+	echo "Must to be 6 arguments! No more, no less!"
+	exit
+fi
+
+# Существует ли директория, указанная в первом аргументе?
+if [ ! -d "$1" ]
+then
+	echo "Directory doesn't exist! Please enter a valid directory!"
+	exit
+fi
+
+# Проверка второго аргумента на нуль и число
+if [ ${#2} -eq 0 ] || [[ $2 =~ [^0-9] ]]
+then
+	echo "Enter the pozitive num of include directories (and not equal 0)!"
+	exit
+fi
+
+# Проверка количества и типа символов в имени директории
+if [ ${#3} -gt 7 ] || [[ $3  =~ [^a-zA-Z] ]]
+then
+	echo "Directory name not must to be greater than 7 symbols and must \
+to contain letters only!"
+	exit
+fi
+
+# Проверка четвертого аргумента на нуль и число
+if [ ${#4} -eq 0 ] || [[ $4 =~ [^0-9] ]]
+then
+	echo "Enter the pozitive num of files (and not equal 0)!"
+	exit
+fi
+
+# Проверка формата имени файла
+regex="^[a-zA-Z]{1,7}[.][a-zA-Z]{1,3}$"
+if ! [[ $5 =~ $regex ]] 
+then
+	echo "First part must to be >= 1 and <= 7 symbols,"
+	echo "extended part must to be >= 1 and <= 3 symbols,"
+	echo "argument must to be like 'example.rus' only!"
+	exit
+fi
+
+# Проверка размера файла
+filesize_full=$(basename -- "$6")
+filesize="${filesize_full%k*}"
+if [[ filesize -le 0 ]] || [[ filesize -gt 100 ]]
+then
+	echo "Filesize cannot be zero, negative or greater than 100!"
+	exit
+fi
+
+}
